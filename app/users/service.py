@@ -13,7 +13,7 @@ class UserService:
 
     def create_new_user(self, new_user: CreateUserDTO) -> User:
         existing = self.repo.get_by_email(new_user.email)
-        if existing:
+        if existing is not None:
             raise ValueError("User already exists")
 
         user = User(

@@ -1,7 +1,12 @@
+import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
-from os import getenv
+from dotenv import load_dotenv
+from os import getenv, getcwd
 
+load_dotenv()
+
+print(getcwd())
 DATABASE_URL: str | None = getenv('DATABASE_URL')
 
 if not DATABASE_URL:
