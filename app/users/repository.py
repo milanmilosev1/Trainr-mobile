@@ -17,8 +17,8 @@ class UserRepository:
     def get_all(self) -> list[User]:
         return self.session.query(User).all()
 
-    def get_by_email(self, email: str) -> Query[User]:
-        return self.session.query(User).where(User.email == email)
+    def get_by_email(self, email: str) -> User | None:
+        return self.session.query(User).where(User.email == email).first()
 
     def add(self, user: User) -> User:
         try:
