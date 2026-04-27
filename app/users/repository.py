@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 from uuid import UUID
 
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, Query
 
 from app.users.models import User
 
@@ -16,6 +16,9 @@ class UserRepository:
 
     def get_all(self) -> list[User]:
         return self.session.query(User).all()
+
+    def get_by_email(self, email: str) -> Query[User]:
+        return self.session.query(User).where(User.email == email)
 
     def add(self, user: User) -> User:
         try:
