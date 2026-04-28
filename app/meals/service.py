@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 
 from app.meals.models import Meal
 from app.meals.repository import MealRepository
-from app.meals.schemas import CreateMealDTO
+from app.meals.schemas import CreateMealDTO, UpdateMealDTO
 
 
 class MealService:
@@ -37,13 +37,13 @@ class MealService:
 
         self.repo.remove(existing)
 
-    def update_meal(self, meal: Meal) -> Meal:
-       success = self.repo.update(meal)
+    def update_meal(self, new_meal: UpdateMealDTO) -> Meal:
+        found = self.repo.get_by_id(new_meal.id)
 
-       if success is None:
-           raise KeyError("Error updating meal")
+        if found is None:
+            raise KeyError("Meal does not exist")
 
-       return success
+        return self.repo.update(found, new_meal)
 
     def get_all_meals(self):
         return self.repo.get_all()

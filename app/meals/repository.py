@@ -5,6 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from app.meals.models import Meal
+from app.meals.schemas import UpdateMealDTO
 
 
 class MealRepository:
@@ -38,28 +39,21 @@ class MealRepository:
             self.session.rollback()
             raise
 
-    def update(self, new_meal: Meal) -> Meal | None:
+    def update(self, found: Meal, dto: UpdateMealDTO) -> Meal:
         try:
-            found = self.get_by_id(new_meal.id)
+            data = dto.model_dump(exclude_unset=True)
 
-            if found is not Meal:
-                return None
+            for key, value in data.items():
+                if key != "id":
+                    setattr(found, key, value)
 
-            found.name = new_meal.name
-            found.meal_type = new_meal.meal_type
-            found.calories = new_meal.calories
-            found.protein_g = new_meal.protein_g
-            found.carbs_g = new_meal.carbs_g
-            found.fat_g = new_meal.fat_g
-            found.cook_time_minutes = new_meal.cook_time_minutes
-            found.difficulty = new_meal.difficulty
-            found.tags = new_meal.tags
             found.updated_at = datetime.now(timezone.utc)
 
             self.session.commit()
             self.session.refresh(found)
 
             return found
+
         except SQLAlchemyError:
             self.session.rollback()
             raise
