@@ -32,7 +32,7 @@ class UserService:
 
     def delete_user(self, user_id: uuid.UUID) -> None:
         user = self.repo.get_by_id(user_id)
-        if not user:
+        if user is None:
             raise KeyError("User not found")
 
         self.repo.remove(user)
@@ -40,21 +40,30 @@ class UserService:
     def update_user_info(self, new_user: UpdateUserDTO) -> User:
         user = self.repo.get_by_id(new_user.id)
 
-        if not user:
+        if user is None:
             raise KeyError("User not found")
 
-        user.password_hash = new_user.password_hash
         user.name = new_user.name
         user.age = new_user.age
-        user.weight = new_user.weight
         user.height = new_user.height
+        user.weight = new_user.weight
+        user.password_hash = new_user.password_hash
         user.updated_at = datetime.now(timezone.utc)
 
         success = self.repo.update(user)
+
         if not success:
             raise ValueError("Failed to update user")
 
-        return user
+        return success
 
     def get_all_users(self) -> list[User]:
         return self.repo.get_all()
+
+    def get_user_by_id(self, user_id: uuid.UUID) -> User:
+        user = self.repo.get_by_id(user_id)
+
+        if user is None:
+            raise KeyError("User not found")
+
+        return user
