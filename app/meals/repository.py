@@ -1,0 +1,65 @@
+from datetime import datetime, timezone
+from uuid import UUID
+
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import Session
+
+from app.meals.models import Meal
+
+
+class MealRepository:
+    def __init__(self, session: Session):
+        self.session = session
+
+    def get_by_id(self, meal_id: UUID) -> Meal | None:
+        return self.session.get(Meal, meal_id)
+
+    def get_all(self) -> list[Meal]:
+        return self.session.query(Meal).all()
+
+    def get_by_name(self, meal_name: str) -> Meal | None:
+        return self.session.query(Meal).where(Meal.name == meal_name).first()
+
+    def add(self, meal: Meal) -> Meal:
+        try:
+            self.session.add(meal)
+            self.session.commit()
+            self.session.refresh(meal)
+            return meal
+        except SQLAlchemyError:
+            self.session.rollback()
+            raise
+
+    def remove(self, meal: Meal) -> None:
+        try:
+            self.session.delete(meal)
+            self.session.commit()
+        except SQLAlchemyError:
+            self.session.rollback()
+            raise
+
+    def update(self, new_meal: Meal) -> Meal | None:
+        try:
+            found = self.get_by_id(new_meal.id)
+
+            if found is not Meal:
+                return None
+
+            found.name = new_meal.name
+            found.meal_type = new_meal.meal_type
+            found.calories = new_meal.calories
+            found.protein_g = new_meal.protein_g
+            found.carbs_g = new_meal.carbs_g
+            found.fat_g = new_meal.fat_g
+            found.cook_time_minutes = new_meal.cook_time_minutes
+            found.difficulty = new_meal.difficulty
+            found.tags = new_meal.tags
+            found.updated_at = datetime.now(timezone.utc)
+
+            self.session.commit()
+            self.session.refresh(found)
+
+            return found
+        except SQLAlchemyError:
+            self.session.rollback()
+            raise
