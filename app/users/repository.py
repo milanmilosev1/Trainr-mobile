@@ -56,7 +56,7 @@ class UserRepository:
             self.session.commit()
             self.session.refresh(found)
 
-            return found
+            return user
         except SQLAlchemyError:
             self.session.rollback()
             raise
