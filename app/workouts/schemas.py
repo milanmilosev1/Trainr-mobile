@@ -22,3 +22,14 @@ class UpdateWorkoutDTO(BaseModel):
     name: str
     notes: str
     is_completed: bool
+
+class WorkoutResponseDTO(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: uuid.UUID
+    user_id: uuid.UUID
+    date: datetime
+    name: str
+    notes: str
+    is_completed: bool
+    created_at: datetime
