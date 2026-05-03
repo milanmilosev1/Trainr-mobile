@@ -32,11 +32,18 @@ def get_router_modules() -> list[str]:
     with open(MAIN_PY, encoding="utf-8") as fh:
         content = fh.read()
 
-    # Match: from app.X.router import router as some_alias
-    import_re = re.compile(r"from\s+(app(?:\.\w+)+)\s+import\s+router\s+as\s+(\w+)")
+    # Match aliased imports:   from app.X.router import router as some_alias
+    aliased_re = re.compile(r"from\s+(app(?:\.\w+)+)\s+import\s+router\s+as\s+(\w+)")
     alias_to_module: dict[str, str] = {}
-    for module_path, alias in import_re.findall(content):
+    for module_path, alias in aliased_re.findall(content):
         alias_to_module[alias] = module_path
+
+    # Match bare imports:      from app.X.router import router
+    # Use the last component of the module path as the de-facto alias ("router"),
+    # but only when the name isn't already claimed by an aliased import.
+    bare_re = re.compile(r"from\s+(app(?:\.\w+)+)\s+import\s+router(?!\s+as\s+\w)")
+    for (module_path,) in bare_re.findall(content):
+        alias_to_module.setdefault("router", module_path)
 
     # Match: app.include_router(some_alias)
     include_re = re.compile(r"app\.include_router\(\s*(\w+)\s*\)")
@@ -63,16 +70,25 @@ def parse_router_file(file_path: str) -> dict:
     with open(file_path, encoding="utf-8") as fh:
         content = fh.read()
 
-    # Extract prefix and first tag from APIRouter(...)
-    router_decl = re.search(
-        r'APIRouter\s*\((.*?)\)',
-        content,
-        re.DOTALL,
-    )
+    # Extract prefix and first tag from APIRouter(...).
+    # Walk character-by-character to handle nested parentheses correctly.
     prefix = ""
     tag = os.path.basename(os.path.dirname(file_path)).capitalize()
-    if router_decl:
-        decl = router_decl.group(1)
+    api_router_start = re.search(r'APIRouter\s*\(', content)
+    decl = ""
+    if api_router_start:
+        depth = 1
+        i = api_router_start.end()
+        while i < len(content) and depth:
+            ch = content[i]
+            if ch == "(":
+                depth += 1
+            elif ch == ")":
+                depth -= 1
+            if depth:
+                decl += ch
+            i += 1
+    if decl:
         prefix_m = re.search(r'prefix\s*=\s*["\']([^"\']*)["\']', decl)
         if prefix_m:
             prefix = prefix_m.group(1)
