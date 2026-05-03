@@ -5,7 +5,7 @@ from os import getenv
 
 load_dotenv()
 
-DATABASE_URL: str | None = getenv('DATABASE_URL')
+DATABASE_URL: str | None = getenv('SUPABASE_URL')
 
 if not DATABASE_URL:
     raise ValueError("DATABASE_URL is not set")

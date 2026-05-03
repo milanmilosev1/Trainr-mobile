@@ -32,7 +32,7 @@ def get_meal_by_id(meal_id: uuid.UUID, service: MealService = Depends(get_meal_s
     except SQLAlchemyError as error:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(error))
 
-@router.put("/", response_model=MealResponseDTO, status_code=status.HTTP_200_OK)
+@router.post("/", response_model=MealResponseDTO, status_code=status.HTTP_200_OK)
 def add_meal(meal: CreateMealDTO, service: MealService = Depends(get_meal_service)):
     try:
         return service.create_new_meal(meal)
