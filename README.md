@@ -12,30 +12,40 @@ A RESTful backend API for the Trainr fitness tracking mobile application, built 
 
 ## Project Structure
 
+<!-- PROJECT_STRUCTURE_START -->
+
 ```
 app/
 ├── db/
 │   └── db_connection.py   # Database engine, session factory, and Base
-├── users/
-│   ├── models.py          # User SQLAlchemy model
-│   ├── schemas.py         # Pydantic DTOs (Create, Update, Response)
-│   ├── repository.py      # Data access layer
-│   ├── service.py         # Business logic
-│   └── router.py          # FastAPI route handlers
+├── exercises/
+│   ├── models.py   # Exercise SQLAlchemy model
+│   ├── repository.py   # Data access layer
+│   ├── router.py   # FastAPI route handlers
+│   ├── schemas.py   # Pydantic DTOs
+│   └── service.py   # Business logic
 ├── meals/
-│   ├── models.py          # Meal SQLAlchemy model (with MealType & MealDifficulty enums)
-│   ├── schemas.py         # Pydantic DTOs
-│   ├── repository.py      # Data access layer
-│   ├── service.py         # Business logic
-│   └── router.py          # FastAPI route handlers
+│   ├── models.py   # Meal SQLAlchemy model
+│   ├── repository.py   # Data access layer
+│   ├── router.py   # FastAPI route handlers
+│   ├── schemas.py   # Pydantic DTOs
+│   └── service.py   # Business logic
+├── users/
+│   ├── models.py   # User SQLAlchemy model
+│   ├── repository.py   # Data access layer
+│   ├── router.py   # FastAPI route handlers
+│   ├── schemas.py   # Pydantic DTOs
+│   └── service.py   # Business logic
 ├── workouts/
-│   ├── models.py          # Workout SQLAlchemy model
-│   ├── schemas.py         # Pydantic DTOs
-│   ├── repository.py      # Data access layer
-│   ├── service.py         # Business logic
-│   └── router.py          # FastAPI route handlers
-└── main.py                # FastAPI app entry point; registers all routers
+│   ├── models.py   # Workout SQLAlchemy model
+│   ├── repository.py   # Data access layer
+│   ├── router.py   # FastAPI route handlers
+│   ├── schemas.py   # Pydantic DTOs
+│   └── service.py   # Business logic
+└── main.py   # FastAPI app entry point; registers all routers
 ```
+
+<!-- PROJECT_STRUCTURE_END -->
 
 ## Setup
 
@@ -134,48 +144,62 @@ The table below is automatically kept up-to-date by the [`scripts/update_readme.
 
 ## Data Models
 
-### User
+<!-- DATA_MODELS_START -->
 
-| Field           | Type       | Notes                    |
-|-----------------|------------|--------------------------|
-| `id`            | UUID       | Primary key, auto-generated |
-| `email`         | string(30) | Unique, required         |
-| `password_hash` | string     | Required                 |
-| `name`          | string(30) | Required                 |
-| `age`           | int        |                          |
-| `weight`        | int        |                          |
-| `height`        | int        |                          |
-| `created_at`    | datetime   | Auto-set on creation     |
-| `updated_at`    | datetime   | Auto-set on update       |
+### Exercise
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `id` | UUID | Primary key |
+| `name` | string |  |
+| `description` | string |  |
+| `muscle_group` | string |  |
+| `equipment_type` | string |  |
 
 ### Meal
 
-| Field               | Type                                        | Notes                  |
-|---------------------|---------------------------------------------|------------------------|
-| `id`                | UUID                                        | Primary key            |
-| `name`              | string                                      | Required               |
-| `meal_type`         | enum (`breakfast`, `lunch`, `dinner`, `snack`) | Required            |
-| `calories`          | int                                         |                        |
-| `protein_g`         | int                                         | Protein in grams       |
-| `carbs_g`           | int                                         | Carbohydrates in grams |
-| `fat_g`             | int                                         | Fat in grams           |
-| `cook_time_minutes` | int                                         |                        |
-| `difficulty`        | enum (`easy`, `medium`, `hard`)             |                        |
-| `tags`              | list[string]                                | Stored as JSONB        |
-| `created_at`        | datetime                                    | Auto-set on creation   |
-| `updated_at`        | datetime                                    | Auto-set on update     |
+| Field | Type | Notes |
+|-------|------|-------|
+| `id` | UUID | Primary key |
+| `name` | string |  |
+| `meal_type` | enum (`breakfast`, `lunch`, `dinner`, `snack`) |  |
+| `calories` | int |  |
+| `protein_g` | int |  |
+| `carbs_g` | int |  |
+| `fat_g` | int |  |
+| `cook_time_minutes` | int |  |
+| `difficulty` | enum (`easy`, `medium`, `hard`) |  |
+| `tags` | list[string] | Stored as JSONB |
+| `created_at` | datetime | Auto-set on creation |
+| `updated_at` | datetime | Auto-set on update |
+
+### User
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `id` | UUID | Primary key, auto-generated |
+| `email` | string(30) | Unique, required |
+| `password_hash` | string | Required |
+| `name` | string(30) | Required |
+| `age` | int |  |
+| `weight` | int |  |
+| `height` | int |  |
+| `created_at` | datetime | Auto-set on creation |
+| `updated_at` | datetime | Auto-set on update |
 
 ### Workout
 
-| Field          | Type     | Notes                       |
-|----------------|----------|-----------------------------|
-| `id`           | UUID     | Primary key, auto-generated |
-| `user_id`      | UUID     | References a user           |
-| `date`         | datetime |                             |
-| `name`         | string   |                             |
-| `notes`        | string   |                             |
-| `is_completed` | bool     | Default: `false`            |
-| `created_at`   | datetime | Auto-set on creation        |
+| Field | Type | Notes |
+|-------|------|-------|
+| `id` | UUID | Primary key, auto-generated |
+| `user_id` | UUID |  |
+| `date` | datetime | Auto-set on creation |
+| `name` | string |  |
+| `notes` | string |  |
+| `is_completed` | bool | Default: `false` |
+| `created_at` | datetime | Auto-set on creation |
+
+<!-- DATA_MODELS_END -->
 
 ## Contributing
 
@@ -183,4 +207,4 @@ When adding a new feature module (router), follow these steps:
 
 1. Create the module directory under `app/` with `models.py`, `schemas.py`, `repository.py`, `service.py`, and `router.py`.
 2. Register the router in `app/main.py` using `app.include_router(...)`.
-3. Push to `main` — the [Update README workflow](.github/workflows/update-readme.yml) will automatically update the **API Endpoints** section of this file.
+3. Push to `main` — the [Update README workflow](.github/workflows/update-readme.yml) will automatically update the **API Endpoints**, **Project Structure**, and **Data Models** sections of this file.

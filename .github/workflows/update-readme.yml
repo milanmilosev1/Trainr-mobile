@@ -7,6 +7,7 @@ on:
     paths:
       - "app/main.py"
       - "app/**/router.py"
+      - "app/**/models.py"
 
 jobs:
   update-readme:
@@ -38,6 +39,6 @@ jobs:
             echo "README.md is already up-to-date."
           else
             git add README.md
-            git commit -m "docs: auto-update README API endpoints"
+            git commit -m "docs: auto-update README API endpoints, project structure, and data models"
             git push
           fi
