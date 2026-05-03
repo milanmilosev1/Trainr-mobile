@@ -39,15 +39,6 @@ def add_meal(meal: CreateMealDTO, service: MealService = Depends(get_meal_servic
     except SQLAlchemyError as error:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(error))
 
-@router.delete("/delete", status_code=status.HTTP_200_OK)
-def remove_meal(meal_id: uuid.UUID, service: MealService = Depends(get_meal_service)):
-    try:
-        service.delete_meal(meal_id)
-    except KeyError as error:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error))
-    except SQLAlchemyError as error:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(error))
-
 @router.patch("/update", response_model=MealResponseDTO, status_code=status.HTTP_200_OK)
 def update_meal(meal: UpdateMealDTO, service: MealService = Depends(get_meal_service)):
     try:
@@ -56,5 +47,14 @@ def update_meal(meal: UpdateMealDTO, service: MealService = Depends(get_meal_ser
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error))
     except ValueError as error:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(error))
+    except SQLAlchemyError as error:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(error))
+
+@router.delete("/delete", status_code=status.HTTP_200_OK)
+def remove_meal(meal_id: uuid.UUID, service: MealService = Depends(get_meal_service)):
+    try:
+        service.delete_meal(meal_id)
+    except KeyError as error:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error))
     except SQLAlchemyError as error:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(error))
