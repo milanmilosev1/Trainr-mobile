@@ -1,0 +1,43 @@
+name: Update README with API Routers
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "app/main.py"
+      - "app/**/router.py"
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Fetch full history so git can push back to the branch
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run README update script
+        run: python scripts/update_readme.py
+
+      - name: Commit and push changes
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet README.md; then
+            echo "README.md is already up-to-date."
+          else
+            git add README.md
+            git commit -m "docs: auto-update README API endpoints"
+            git push
+          fi
