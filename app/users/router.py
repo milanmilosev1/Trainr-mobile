@@ -15,15 +15,6 @@ def get_user_service(db: Session = Depends(get_db)) -> UserService:
     repo = UserRepository(db)
     return UserService(repo)
 
-@router.post("/", response_model=UserResponseDTO, status_code=status.HTTP_201_CREATED)
-def add_user(new_user: CreateUserDTO, service: UserService = Depends(get_user_service)):
-    try:
-        return service.create_new_user(new_user)
-    except ValueError as error:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(error))
-    except SQLAlchemyError as error:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(error))
-
 @router.get("/all", response_model=list[UserResponseDTO], status_code=status.HTTP_200_OK)
 def get_all_users(service: UserService = Depends(get_user_service)):
     try:
@@ -37,6 +28,15 @@ def get_user_by_id(user_id: uuid.UUID, service: UserService = Depends(get_user_s
         return service.get_user_by_id(user_id)
     except KeyError as error:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error))
+    except SQLAlchemyError as error:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(error))
+
+@router.post("/", response_model=UserResponseDTO, status_code=status.HTTP_201_CREATED)
+def add_user(new_user: CreateUserDTO, service: UserService = Depends(get_user_service)):
+    try:
+        return service.create_new_user(new_user)
+    except ValueError as error:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(error))
     except SQLAlchemyError as error:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(error))
 
