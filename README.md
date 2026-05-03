@@ -118,6 +118,18 @@ The table below is automatically kept up-to-date by the [`scripts/update_readme.
 | `PATCH` | `/workouts/update` | Update workout info |
 | `DELETE` | `/workouts/id` | Remove workout |
 
+### Exercises
+
+**Base path:** `/exercises`
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/exercises/` | Get all exercises |
+| `GET` | `/exercises/id` | Get exercise by id |
+| `POST` | `/exercises/` | Add exercise |
+| `PATCH` | `/exercises/update` | Update exercise |
+| `DELETE` | `/exercises/delete` | Remove exercise |
+
 <!-- ROUTERS_END -->
 
 ## Data Models
