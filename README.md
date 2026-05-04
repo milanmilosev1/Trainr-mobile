@@ -24,6 +24,12 @@ app/
 │   ├── router.py   # FastAPI route handlers
 │   ├── schemas.py   # Pydantic DTOs
 │   └── service.py   # Business logic
+├── foods/
+│   ├── models.py   # Food SQLAlchemy model
+│   ├── repository.py   # Data access layer
+│   ├── router.py   # FastAPI route handlers
+│   ├── schemas.py   # Pydantic DTOs
+│   └── service.py   # Business logic
 ├── meals/
 │   ├── models.py   # Meal SQLAlchemy model
 │   ├── repository.py   # Data access layer
@@ -140,6 +146,18 @@ The table below is automatically kept up-to-date by the [`scripts/update_readme.
 | `PATCH` | `/exercises/update` | Update exercise |
 | `DELETE` | `/exercises/delete` | Remove exercise |
 
+### Foods
+
+**Base path:** `/foods`
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/foods/` | Get all foods |
+| `GET` | `/foods/id` | Get food by id |
+| `POST` | `/foods/` | Add food |
+| `PATCH` | `/foods/update` | Update food |
+| `DELETE` | `/foods/delete` | Delete food |
+
 <!-- ROUTERS_END -->
 
 ## Data Models
@@ -155,6 +173,18 @@ The table below is automatically kept up-to-date by the [`scripts/update_readme.
 | `description` | string |  |
 | `muscle_group` | string |  |
 | `equipment_type` | string |  |
+
+### Food
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `id` | UUID | Primary key |
+| `name` | string | Required |
+| `calories_per_serving` | int | Required |
+| `protein_g` | int | Required |
+| `carbs_g` | int | Required |
+| `fat_g` | int | Required |
+| `serving_size` | string | Required |
 
 ### Meal
 
