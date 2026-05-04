@@ -31,12 +31,12 @@ class ExerciseService:
         found = self.repo.get_by_id(exercise.id)
 
         if found is None:
-            raise KeyError("Meal does not exist")
+            raise KeyError("Exercise does not exist")
 
         return self.repo.update(found, exercise)
     
     def get_all_exercises(self) -> list[Exercise]:
         return self.repo.get_all()
 
-    def get_exercise_by_id(self, exercise_id) -> Exercise:
+    def get_exercise_by_id(self, exercise_id) -> Exercise | None:
         return self.repo.get_by_id(exercise_id)

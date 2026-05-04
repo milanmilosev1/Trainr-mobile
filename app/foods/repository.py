@@ -1,42 +1,41 @@
-from datetime import datetime, timezone
 import uuid
 
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from app.exercises.models import Exercise
-from app.exercises.schemas import UpdateExerciseDTO
+from app.foods.models import Food
+from app.foods.schemas import UpdateFoodDTO
 
 
-class ExerciseRepository:
+class FoodRepository:
     def __init__(self, session: Session):
         self.session = session
 
-    def get_all(self) -> list[Exercise]:
-        return self.session.query(Exercise).all()
+    def get_by_id(self, food_id: uuid.UUID) -> Food | None:
+        return self.session.get(Food, food_id)
 
-    def get_by_id(self, exercise_id: uuid.UUID) -> Exercise | None:
-        return self.session.get(Exercise, exercise_id)
+    def get_all(self) -> list[Food]:
+        return self.session.query(Food).all()
 
-    def add(self, exercise: Exercise) -> Exercise | None:
+    def add(self, food: Food) -> Food:
         try:
-            self.session.add(exercise)
+            self.session.add(food)
             self.session.commit()
-            self.session.refresh(exercise)
-            return exercise
+            self.session.refresh(food)
+            return food
         except SQLAlchemyError:
             self.session.rollback()
             raise
 
-    def remove(self, exercise: Exercise) -> None:
+    def remove(self, food: Food) -> None:
         try:
-            self.session.delete(exercise)
+            self.session.delete(food)
             self.session.commit()
         except SQLAlchemyError:
             self.session.rollback()
             raise
 
-    def update(self, found: Exercise, new: UpdateExerciseDTO) -> Exercise:
+    def update(self, found: Food, new: UpdateFoodDTO) -> Food:
         try:
             data = new.model_dump(exclude_unset=True)
 
