@@ -36,6 +36,12 @@ app/
 │   ├── router.py   # FastAPI route handlers
 │   ├── schemas.py   # Pydantic DTOs
 │   └── service.py   # Business logic
+├── user_shopping_list/
+│   ├── models.py   # UserShoppingList SQLAlchemy model
+│   ├── repository.py   # Data access layer
+│   ├── router.py   # FastAPI route handlers
+│   ├── schemas.py   # Pydantic DTOs
+│   └── service.py   # Business logic
 ├── users/
 │   ├── models.py   # User SQLAlchemy model
 │   ├── repository.py   # Data access layer
@@ -158,6 +164,18 @@ The table below is automatically kept up-to-date by the [`scripts/update_readme.
 | `PATCH` | `/foods/update` | Update food |
 | `DELETE` | `/foods/delete` | Delete food |
 
+### User Shopping Lists
+
+**Base path:** `/user_shopping_list`
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/user_shopping_list/all` | Get all shopping lists |
+| `GET` | `/user_shopping_list/id` | Get shopping list by id |
+| `POST` | `/user_shopping_list/` | Add shopping list |
+| `PATCH` | `/user_shopping_list/update` | Update shopping list info |
+| `DELETE` | `/user_shopping_list/delete` | Delete shopping list |
+
 <!-- ROUTERS_END -->
 
 ## Data Models
@@ -202,6 +220,16 @@ The table below is automatically kept up-to-date by the [`scripts/update_readme.
 | `tags` | list[string] | Stored as JSONB |
 | `created_at` | datetime | Auto-set on creation |
 | `updated_at` | datetime | Auto-set on update |
+
+### UserShoppingList
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `id` | UUID | Primary key |
+| `user_id` | UUID |  |
+| `start_date` | datetime |  |
+| `end_date` | datetime |  |
+| `created_at` | datetime | Auto-set on creation |
 
 ### User
 
