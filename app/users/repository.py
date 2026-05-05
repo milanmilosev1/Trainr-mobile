@@ -5,6 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session, Query
 
 from app.users.models import User
+from app.users.schemas import UpdateUserDTO
 
 
 class UserRepository:
@@ -38,25 +39,21 @@ class UserRepository:
             self.session.rollback()
             raise
 
-    def update(self, user: User) -> User | None:
+    def update(self, found: User, dto: UpdateUserDTO) -> User | None:
         try:
-            found = self.session.get(User, user.id)
+            data = dto.model_dump(exclude_unset=True)
 
-            if found is None:
-                return None
+            for key, value in data.items():
+                if key != "id":
+                    setattr(found, key, value)
 
-            found.email = user.email
-            found.password_hash = user.password_hash
-            found.name = user.name
-            found.age = user.age
-            found.weight = user.weight
-            found.height = user.height
             found.updated_at = datetime.now(timezone.utc)
 
             self.session.commit()
             self.session.refresh(found)
 
-            return user
+            return found
+
         except SQLAlchemyError:
             self.session.rollback()
             raise
