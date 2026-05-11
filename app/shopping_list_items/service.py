@@ -44,3 +44,6 @@ class ShoppingListItemService:
             raise KeyError("Item does not exist")
 
         return self.repo.update(found, dto)
+
+    def get_shopping_list_items_from_user_shopping_list(self, shopping_list_id: uuid.UUID) -> list[ShoppingListItem]:
+        return [x for x in self.repo.get_all() if x.shopping_list_id == shopping_list_id]

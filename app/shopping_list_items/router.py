@@ -57,3 +57,10 @@ def remove_item(item: uuid.UUID, service: ShoppingListItemService = Depends(get_
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error))
     except SQLAlchemyError as error:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(error))
+
+@router.get("/by-shopping-list", response_model=list[ShoppingListItemResponseDTO], status_code=status.HTTP_200_OK)
+def get_all_items_from_shopping_list(shopping_list_id: uuid.UUID, service: ShoppingListItemService = Depends(get_service)):
+    try:
+        service.get_shopping_list_items_from_user_shopping_list(shopping_list_id)
+    except SQLAlchemyError as error:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(error))
