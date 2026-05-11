@@ -89,6 +89,7 @@ cp .env.example .env   # then fill in SUPABASE_URL
 | Variable       | Description                                      |
 |----------------|--------------------------------------------------|
 | `SUPABASE_URL` | PostgreSQL connection string for your database   |
+| `DATABASE_URL` | PgAdmin connection string for local testing      |
 
 ### Running the API
 
