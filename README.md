@@ -30,6 +30,12 @@ app/
 │   ├── router.py   # FastAPI route handlers
 │   ├── schemas.py   # Pydantic DTOs
 │   └── service.py   # Business logic
+├── meal_ingredients/
+│   ├── models.py   # MealIngredient SQLAlchemy model
+│   ├── repository.py   # Data access layer
+│   ├── router.py   # FastAPI route handlers
+│   ├── schemas.py   # Pydantic DTOs
+│   └── service.py   # Business logic
 ├── meals/
 │   ├── models.py   # Meal SQLAlchemy model
 │   ├── repository.py   # Data access layer
@@ -194,6 +200,19 @@ The table below is automatically kept up-to-date by the [`scripts/update_readme.
 | `POST` | `/shopping_list_items/` | Add item |
 | `PATCH` | `/shopping_list_items/update` | Update item |
 | `DELETE` | `/shopping_list_items/delete` | Remove item |
+| `GET` | `/shopping_list_items/by-shopping-list` | Get all items from shopping list |
+
+### Meal ingredient
+
+**Base path:** `/meal-ingredients`
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/meal-ingredients/all` | Get all igredients |
+| `GET` | `/meal-ingredients/id` | Get ingredient by id |
+| `POST` | `/meal-ingredients/` | Add ingredient |
+| `PATCH` | `/meal-ingredients/update` | Update ingredient |
+| `DELETE` | `/meal-ingredients/delete` | Remove ingredient |
 
 <!-- ROUTERS_END -->
 
@@ -222,6 +241,15 @@ The table below is automatically kept up-to-date by the [`scripts/update_readme.
 | `carbs_g` | int | Required |
 | `fat_g` | int | Required |
 | `serving_size` | string | Required |
+
+### MealIngredient
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `id` | UUID | Primary key |
+| `meal_id` | UUID |  |
+| `food_id` | UUID |  |
+| `quantity` | int |  |
 
 ### Meal
 
