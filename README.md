@@ -48,6 +48,12 @@ app/
 │   ├── router.py   # FastAPI route handlers
 │   ├── schemas.py   # Pydantic DTOs
 │   └── service.py   # Business logic
+├── user_favourite_meals/
+│   ├── models.py   # UserFavouriteMeal SQLAlchemy model
+│   ├── repository.py   # Data access layer
+│   ├── router.py   # FastAPI route handlers
+│   ├── schemas.py   # Pydantic DTOs
+│   └── service.py   # Business logic
 ├── user_shopping_list/
 │   ├── models.py   # UserShoppingList SQLAlchemy model
 │   ├── repository.py   # Data access layer
@@ -214,6 +220,19 @@ The table below is automatically kept up-to-date by the [`scripts/update_readme.
 | `PATCH` | `/meal-ingredients/update` | Update ingredient |
 | `DELETE` | `/meal-ingredients/delete` | Remove ingredient |
 
+### User favourite meals
+
+**Base path:** `/user-favourite-meals`
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/user-favourite-meals/all` | Get all meals |
+| `GET` | `/user-favourite-meals/id` | Get meals by id |
+| `POST` | `/user-favourite-meals/` | Add user favourite meal |
+| `PATCH` | `/user-favourite-meals/update` | Update meal |
+| `DELETE` | `/user-favourite-meals/delete` | Remove meal |
+| `GET` | `/user-favourite-meals/user-id` | Get user favourite meals by user id |
+
 <!-- ROUTERS_END -->
 
 ## Data Models
@@ -277,6 +296,15 @@ The table below is automatically kept up-to-date by the [`scripts/update_readme.
 | `ingredient_name` | string |  |
 | `is_checked` | bool | Default: `false` |
 | `quantity` | int |  |
+
+### UserFavouriteMeal
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `id` | UUID | Primary key |
+| `user_id` | UUID |  |
+| `meal_id` | UUID |  |
+| `created_at` | datetime | Auto-set on creation |
 
 ### UserShoppingList
 
