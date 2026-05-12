@@ -8,6 +8,7 @@ from app.user_shopping_list.router import router as user_shopping_lists_router
 from app.shopping_list_items.router import router as shopping_list_item_router
 from app.meal_ingredients.router import router as meal_ingredient_router
 from app.user_favourite_meals.router import router as user_favourite_meals_router
+from app.user_meal_plans.router import router as user_meal_plans_router
 
 app = FastAPI()
 
@@ -20,3 +21,4 @@ app.include_router(user_shopping_lists_router)
 app.include_router(shopping_list_item_router)
 app.include_router(meal_ingredient_router)
 app.include_router(user_favourite_meals_router)
+app.include_router(user_meal_plans_router)
