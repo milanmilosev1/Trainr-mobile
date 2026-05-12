@@ -54,6 +54,12 @@ app/
 │   ├── router.py   # FastAPI route handlers
 │   ├── schemas.py   # Pydantic DTOs
 │   └── service.py   # Business logic
+├── user_meal_plans/
+│   ├── models.py   # UserMealPlan SQLAlchemy model
+│   ├── repository.py   # Data access layer
+│   ├── router.py   # FastAPI route handlers
+│   ├── schemas.py   # Pydantic DTOs
+│   └── service.py   # Business logic
 ├── user_shopping_list/
 │   ├── models.py   # UserShoppingList SQLAlchemy model
 │   ├── repository.py   # Data access layer
@@ -233,6 +239,19 @@ The table below is automatically kept up-to-date by the [`scripts/update_readme.
 | `DELETE` | `/user-favourite-meals/delete` | Remove meal |
 | `GET` | `/user-favourite-meals/user-id` | Get user favourite meals by user id |
 
+### User meal plans
+
+**Base path:** `/user-meal-plans`
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/user-meal-plans/all` | Get all meal plans |
+| `GET` | `/user-meal-plans/id` | Get meal plan by id |
+| `GET` | `/user-meal-plans/user-id` | Get meal plan by user id |
+| `POST` | `/user-meal-plans/` | Add meal plan |
+| `PATCH` | `/user-meal-plans/update` | Update meal plan |
+| `DELETE` | `/user-meal-plans/delete` | Remove meal plan |
+
 <!-- ROUTERS_END -->
 
 ## Data Models
@@ -304,6 +323,17 @@ The table below is automatically kept up-to-date by the [`scripts/update_readme.
 | `id` | UUID | Primary key |
 | `user_id` | UUID |  |
 | `meal_id` | UUID |  |
+| `created_at` | datetime | Auto-set on creation |
+
+### UserMealPlan
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `id` | UUID | Primary key |
+| `user_id` | UUID |  |
+| `date` | datetime |  |
+| `meal_id` | UUID |  |
+| `meal_slot` | MealType |  |
 | `created_at` | datetime | Auto-set on creation |
 
 ### UserShoppingList
